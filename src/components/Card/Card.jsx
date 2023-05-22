@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { mockData } from "../../static/mock";
+// import { mockData } from "../../static/mock";
 import { Link } from "react-router-dom";
 import "../../App.css";
 
-const Card = () => {
+const Card = ({ currentRecords }) => {
   const [search, setSearch] = useState(null);
 
   const bySearch = (data, search) => {
@@ -32,7 +32,7 @@ const Card = () => {
         </div>
       </div>
       <div className="top-news">
-        {filteredList(mockData, search).map((data) => (
+        {filteredList(currentRecords, search).map((data) => (
           <div
             className="position-relative overflow-hidden news-card"
             style={{ height: "300px" }}
@@ -40,7 +40,7 @@ const Card = () => {
             <img
               className="img-fluid h-100"
               src={data.urlToImage}
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", width: "100%" }}
             />
             <div className="overlay">
               <div style={{ marginBottom: "140px" }}>

@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
+import Pagination from "../Pagination/Pagination";
 import { useCountryContext } from "../context/countryContext";
+import { mockData } from "../../static/mock";
 import "../../App.css";
 
 const Landing = () => {
-  const [data, setData] = useState(null);
   const { country } = useCountryContext();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("https://newsapi.org/docs/endpoints/top-headlines", {
-      mode: "no-cors",
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage] = useState(6);
+
+  // useEffect(() => {
+  //   axios
+  //     .get("MOCK_DATA.json")
+  //     .then((res) => {
+  //       setData(res.data);
+  //       setLoading(false);
+  //     })
+  //     .catch(() => {
+  //       alert("There was an error while retrieving the data");
+  //     });
+  // }, []);
+
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = mockData.slice(indexOfFirstRecord, indexOfLastRecord);
+  const nPages = Math.ceil(mockData.length / recordsPerPage);
 
   return (
     <div className="app">
@@ -31,10 +46,16 @@ const Landing = () => {
               </h4>
             </div>
 
-            <Card />
+            <Card currentRecords={currentRecords} />
           </div>
         </div>
       </div>
+      <Pagination
+        nPages={nPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      <Footer />
     </div>
   );
 };
